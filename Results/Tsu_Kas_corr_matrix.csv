@@ -1,5 +1,5 @@
-"","mean_ss_num ","ft ","mean_ov_num ","wue "
-"mean_ss_num","","","",""
-"ft"," 0.049   ","","",""
-"mean_ov_num"," 0.071   ","-0.104   ","",""
-"wue","-0.098   "," 0.330***"," 0.063   ",""
+,mean_ss_num ,ft ,mean_ov_num ,wue 
+mean_ss_num,,,,
+ft,0.049,,,
+mean_ov_num,0.071,-0.104,,
+wue,-0.098, 0.330***,0.063,
