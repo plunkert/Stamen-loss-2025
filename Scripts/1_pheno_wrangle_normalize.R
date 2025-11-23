@@ -62,13 +62,13 @@ dat.si$norm_mean_ss <- predict(si.normObj.ss, newdata = dat.si$mean_ss_num)
 si.ft <- read_excel("./Data/belm_roda_pheno_geno/Chamber_FloweringTime.xlsx", sheet="Flowering Time_RILs")
 
 # merge short stamen number and flowering time into one dataframe
-dat.si <- merge(dat.si, si.ft, by.x="id", by.y = "RIL")
+dat.si <- merge(dat.si, si.ft, by.x="id", by.y = "RIL", all=TRUE)
 
 # read in SW IT ovule number
 si.ov <- read_excel("./Data/belm_roda_pheno_geno/SW IT OvuleNo.xlsx")
-colnames(si.ov) <- c("RIL", "ril_ovule_num", "spacer", "parent", "line", "parent_ovule_num")
+colnames(si.ov) <- c("id", "ril_ovule_num", "spacer", "parent", "line", "parent_ovule_num")
 
-dat.si <- merge(dat.si, si.ov[,1:2], by.x="id", by.y="RIL")
+dat.si <- merge(dat.si, si.ov[,1:2], by="id", all=TRUE)
 
 # remove irrelevant columns
 dat.si <- dat.si[,c(1:3, 5, 7:8)]

@@ -1,5 +1,5 @@
-,mean_stamen_number ,IT_meandaystoflr ,SW_meandaystoflr ,ril_ovule_num 
-mean_stamen_number,,,,
-IT_meandaystoflr, 0.412***,,,
-SW_meandaystoflr, 0.266***, 0.506***,,
-ril_ovule_num,-0.151***,-0.294***,-0.157** ,
+"","mean_stamen_number ","IT_meandaystoflr ","SW_meandaystoflr ","ril_ovule_num "
+"mean_stamen_number","","","",""
+"IT_meandaystoflr"," 0.413***","","",""
+"SW_meandaystoflr"," 0.265***"," 0.503***","",""
+"ril_ovule_num","-0.151***","-0.293***","-0.159** ",""
