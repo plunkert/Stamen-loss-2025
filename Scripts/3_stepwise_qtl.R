@@ -30,7 +30,6 @@ dat.si.calc <- calc.genoprob(dat.si.jitter, step=1,
 dat.tk.calc <- calc.genoprob(dat.tk.jitter, step=1, 
                              map.function="kosambi", stepwidth = "fixed")
 
-
 # Read in scantwo permutations
 
 load("./Results/si_mean_stamen_scantwo_perm.RData")
@@ -87,6 +86,36 @@ step.out.ov.tk.01 <- stepwiseqtl(dat.tk.calc, pheno.col="mean_ov_num",
                                  verbose=F, refine.locations=T,additive.only=F, keeplodprofile=T,keeptrace=T)
 
 
+# Suspicious of second chr 5 QTL in step.out.tk.01. Can I force it to drop one?
+
+tk_broad_chr5 <- dropfromqtl(step.out.tk.01, qtl.name="Q6", drop.lod.profile = TRUE)
+
+tk_broad_chr5_qtl <- refineqtl(cross=dat.tk.calc, pheno.col="mean_ss_num", qtl=tk_broad_chr5, method="hk", model="normal", keeplodprofile = T)
+
+plotLodProfile(tk_broad_chr5_qtl)
+
+#fit the qtl model. Stepwise stats won't work now that I've dropped a QTL, so getting table
+# values manually
+
+# get LOD, PVE, effect estimates
+fit_broad_5<-fitqtl(dat.tk.calc, pheno.col="mean_ss_num", qtl=tk_broad_chr5_qtl,
+            get.ests=T,dropone=T, method="hk", formula="y ~ Q1 + Q2 + Q3 + Q4 + Q5 + Q2:Q5")
+
+# calculate percent divergence explained by each QTL
+100*2*summary(fit_broad_5)$est[,1]/(1.989-0.68)
+
+# get 1.5 LOD intervals
+lodint(tk_broad_chr5_qtl, qtl.index=1)
+lodint(tk_broad_chr5_qtl, qtl.index=2)
+lodint(tk_broad_chr5_qtl, qtl.index=3)
+lodint(tk_broad_chr5_qtl, qtl.index=4)
+lodint(tk_broad_chr5_qtl, qtl.index=5)
+
+# for pseudomarker positions, get nearest marker so I have Mb position to put in table
+find.marker(dat.tk.calc, chr=1, pos=89)
+find.marker(dat.tk.calc, chr=4, pos=84)
+find.marker(dat.tk.calc, chr=3, pos=71)
+
 
 # Explore variation in max.qtl parameter with significance threshold = 0.05
 pdf("./Results/vary_max_qtl_tk_mean_ss_0.01.pdf")
@@ -111,18 +140,16 @@ for (i in 5:16){
 dev.off()
 
 # At alpha=0.05, the QTL identified keep changing as max.qtl is increased, whereas 
-# at alpha=0.05, the QTL identified stabilize once max.qtl=6. Since multi-QTL model 
+# at alpha=0.01, the QTL identified stabilize once max.qtl=6. Since multi-QTL model 
 # at alpha=0.05 is robust to changes in max.qtl, I'll use this significance threshold
 # moving forward.
 
-#81D4FA is sweden italy color
-#01579B is tsu kas color
 
 # Plot LOD profiles with significance threshold
 svg("./Results/stepwise_lod_ss.svg", width=8, height=10)
 par(mfrow=c(2,1))
-plotLodProfile(step.out.tk.01, showallchr=TRUE, ylim=c(0,30), ylab="LOD", qtl.labels=FALSE,
-               col=c('black', 'darkgray', 'black', 'black', 'darkgray', 'black'))
+plotLodProfile(tk_broad_chr5_qtl, showallchr=TRUE, ylim=c(0,32), ylab="LOD", qtl.labels=FALSE,
+               col=c('black', 'darkgray', 'black', 'black', 'black'))
 abline(h=pen.tk.scantwo.0.01[1], col="firebrick3", lty='dashed')
 
 plotLodProfile(step.out.si.01, showallchr=TRUE, ylim=c(0,55), ylab="LOD", qtl.labels=FALSE)
@@ -191,19 +218,17 @@ tk_ov_table <- stepwiseStats(cross=dat.tk.calc, model.in=step.out.ov.tk.01, phe=
 # Add percent of parental divergence explained as 100 * 2*effect.estimate/(Sweden - Italy)
 si_table$perc_div <- 100*2*si_table$effect.estimate/(5.96-4.92)
 
+si_ov_table$perc_div <- 100*2*si_ov_table$effect.estimate/(40.20-34.25)
+
 si_norm_table$perc_div <- 100*2*si_norm_table$effect.estimate/(0.6623889 + 1.8308334)
 
-# Add percent of parental divergence explained as 100 * 2*effect.estimate/(Tsu - Kas)
-tk_table$perc_div <- 100*2*tk_table$effect.estimate/(1.989-0.68)
 
+# Add percent of parental divergence explained as 100 * 2*effect.estimate/(Tsu - Kas)
 tk_norm_table$perc_div <- 100*2*tk_norm_table$effect.estimate/(1.720862+1.671206)
 
 # Export tables to CSV
 si_table[,c(1,3,4,17,18,7,12,8,19)] %>% mutate_if(is.numeric, round, digits = 2) %>%
   write.csv("./Results/si_mean_stamen_QTL_table.csv", row.names=FALSE)
-
-tk_table[,c(1,3,4,17,18,7,12,8,19)] %>% mutate_if(is.numeric, round, digits = 2) %>%
-  write.csv("./Results/tk_mean_stamen_QTL_table.csv", row.names=FALSE)
 
 si_norm_table[,c(1,3,4,17,18,7,12,8,19)] %>% mutate_if(is.numeric, round, digits = 2) %>%
   write.csv("./Results/si_norm_stamen_QTL_table.csv", row.names=FALSE)
@@ -211,8 +236,7 @@ si_norm_table[,c(1,3,4,17,18,7,12,8,19)] %>% mutate_if(is.numeric, round, digits
 tk_norm_table[,c(1,3,4,17,18,7,12,8,19)] %>% mutate_if(is.numeric, round, digits = 2) %>%
   write.csv("./Results/tk_norm_stamen_QTL_table.csv", row.names=FALSE)
 
-
-si_ov_table[,c(1,3,4,17,18,7,12,8)] %>% mutate_if(is.numeric, round, digits = 2) %>%
+si_ov_table[,c(1,3,4,17,18,7,12,8,19)] %>% mutate_if(is.numeric, round, digits = 2) %>%
   write.csv("./Results/si_mean_ovule_QTL_table.csv", row.names=FALSE)
 
 tk_ov_table[,c(1,3,4,17,18,7,12,8)] %>% mutate_if(is.numeric, round, digits = 2) %>%

@@ -243,6 +243,9 @@ ss_si_m <- lm(data=ss_si_means, mean ~ parent)
 summary(ss_si_m)
 ss_si_emm <- emmeans(ss_si_m, ~ parent) %>% as.data.frame()
 
+#81D4FA is sweden italy color
+#01579B is tsu kas color
+
 # Make histograms indicating RIL phenotype distribution and parental genotypes with CIs
 tk_ft_hist <- ggplot(dat.tk$pheno, aes(x = ft_raw)) +
   geom_histogram(color = "black", fill = "#81D4FA", binwidth=10) +
