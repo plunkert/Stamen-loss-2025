@@ -14,11 +14,8 @@ dat.si <- read.cross("csvs", genotypes=c("a","b"),
                      phefile= "./Data/belm_roda_pheno_geno/wrangled_belm_roda_phenos.csv",
                      na.strings=c("NA","-"))
 
-#dat.tk <-read.cross("csv", "./Data/tsu_kas_pheno_geno/", file = "Tsu_Kas_Rqtl_format.csv",
-#                 genotypes=c("AA", "AB", "BB"), na.strings=c("NA","-"))
-
-#dat.tk <-read.cross("csv", dir="./data/tsu_kas_pheno_geno/", file = "TKrilsGenos_map55_pheno.csv",
-#                 genotypes=c("a","b"), na.strings=c("NA","-"))
+dat.tk <-read.cross("csv", "./Data/tsu_kas_pheno_geno/", file = "Tsu_Kas_Rqtl_format.csv",
+                    genotypes=c("AA", "BB"), na.strings=c("NA","-"))
 
 
 # tell Rqtl it's RILs from a two-parent cross
@@ -39,16 +36,16 @@ dat.tk.calc <- calc.genoprob(dat.tk.jitter, step=1,
                              map.function="kosambi", stepwidth = "fixed")
 
 # one-dimensional QTl analysis with scanone
-out.si.scan1 <- scanone(dat.si.calc, method = "hk", pheno.col= c("mean_stamen_number", "norm_mean_ss", "ril_ovule_num"))
+out.si.scan1 <- scanone(dat.si.calc, method = "hk", pheno.col= c("mean_stamen_number", "norm_mean_ss", "ril_ovule_num", "IT_meandaystoflr"))
 
-out.tk.scan1 <- scanone(dat.tk.calc, method="hk", pheno.col=c("mean_ss_num", "norm_mean_ss", "mean_ov_num"))
+out.tk.scan1 <- scanone(dat.tk.calc, method="hk", pheno.col=c("mean_ss_num", "norm_mean_ss", "mean_ov_num", "ft_raw"))
 
 
 #scanone permutations
 out.si.scan1.perm <- scanone(dat.si.calc, method="hk",n.perm=10000, 
-                             pheno.col=c("mean_stamen_number", "norm_mean_ss", "ril_ovule_num"))
+                             pheno.col=c("mean_stamen_number", "norm_mean_ss", "ril_ovule_num", "IT_meandaystoflr"))
 out.tk.scan1.perm <- scanone(dat.tk.calc, method="hk", n.perm=10000,
-                             pheno.col=c("mean_ss_num", "norm_mean_ss", "mean_ov_num"))
+                             pheno.col=c("mean_ss_num", "norm_mean_ss", "mean_ov_num", "ft_raw"))
 
 # save vectors of permutation thresholds. Stamen number, then normalized stamen number, 
 # then ovule number
@@ -69,12 +66,18 @@ abline(h=scan1.si.penalties0.01[2])
 plot(out.si.scan1, lodcolumn = 3)
 abline(h=scan1.si.penalties0.01[3])
 
+plot(out.si.scan1, lodcolumn = 4)
+abline(h=scan1.si.penalties0.01[4])
+
 plot(out.tk.scan1, lodcolumn = 1)
 abline(h=scan1.tk.penalties0.01[1])
 plot(out.tk.scan1, lodcolumn = 2)
 abline(h=scan1.tk.penalties0.01[2])
 plot(out.tk.scan1, lodcolumn = 3)
 abline(h=scan1.tk.penalties0.01[3])
+
+plot(out.tk.scan1, lodcolumn = 4)
+abline(h=scan1.tk.penalties0.01[4])
 
 # plot stamen scanone 
 
@@ -138,6 +141,15 @@ out.si.ov.scan2.perm <- scantwopermhk(dat.si.calc,
 
 save(out.si.ov.scan2.perm, file="./Results/si_ovule_scantwo_perm.RData")
 
+
+out.si.ft.scan2.perm <- scantwopermhk(dat.si.calc,
+                                      pheno.col="IT_meandaystoflr", n.perm=10000,
+                                      addcovar=NULL, weights=NULL,
+                                      assumeCondIndep=FALSE, verbose=TRUE, batchsize = 100)
+
+save(out.si.ft.scan2.perm, file="./Results/si_IT_ft_scantwo_perm.RData")
+
+
 out.tk.scan2.perm <- scantwopermhk(dat.tk.calc,
                                       pheno.col="mean_ss_num", n.perm=10000,
                                       addcovar=NULL, weights=NULL,
@@ -159,4 +171,10 @@ out.tk.ov.scan2.perm <- scantwopermhk(dat.tk.calc,
 
 save(out.tk.ov.scan2.perm, file="./Results/tk_ovule_scantwo_perm.RData")
 
+out.tk.ft.scan2.perm <- scantwopermhk(dat.tk.calc,
+                                      pheno.col="ft_raw", n.perm=10000,
+                                      addcovar=NULL, weights=NULL,
+                                      assumeCondIndep=FALSE, verbose=TRUE, batchsize = 100)
+
+save(out.tk.ft.scan2.perm, file="./Results/tk_ft_scantwo_perm.RData")
 

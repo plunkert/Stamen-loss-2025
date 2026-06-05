@@ -22,8 +22,8 @@ ggplot(dat, aes(xmin = start, xmax = end, y = molecule, fill = type, color = typ
 #    data = vars,
 #    aes(x = position, y = molecule))+
   geom_blank(data=dat)+
-  scale_x_continuous(limits=c(800000, 3.5e6))+
-  ggrepel::geom_text_repel(aes(x = end - ((end-start)/2), y = molecule, label = feature, angle = c(rep(90, 13),0,0,0)), size = 5, color = "black", 
+  scale_x_continuous(limits=c(300000, 3.5e6))+
+  ggrepel::geom_text_repel(aes(x = end - ((end-start)/2), y = molecule, label = feature, angle = c(rep(90, 13),0,0)), size = 5, color = "black", 
                            nudge_y = c(rep(c(0.3,-0.3), 6),0.3,0.15,0.15,0.15))+
   guides(fill = F) +
   scale_color_manual(aesthetics = c("fill", "color"), values = c("gene" = "red", "qtl" = "lightseagreen")) +

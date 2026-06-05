@@ -35,27 +35,37 @@ dat.tk.calc <- calc.genoprob(dat.tk.jitter, step=1,
 load("./Results/si_mean_stamen_scantwo_perm.RData")
 load("./Results/si_norm_stamen_scantwo_perm.RData")
 load("./Results/si_ovule_scantwo_perm.RData")
+load("./Results/si_IT_ft_scantwo_perm.RData")
 
 load("./Results/tk_mean_short_stamen_scantwo_perm.RData")
 load("./Results/tk_norm_short_stamen_scantwo_perm.RData")
 load("./Results/tk_ovule_scantwo_perm.RData")
+load("./Results/tk_ft_scantwo_perm.RData")
+
 
 # get penalties at 0.05 and 0.01 significance levels
 pen.si.scantwo.0.01 <- calc.penalties(out.si.scan2.perm, alpha = 0.01)
 pen.si.norm.scantwo.0.01 <- calc.penalties(out.si.norm.scan2.perm, alpha = 0.01)
 pen.si.ov.scantwo.0.01 <- calc.penalties(out.si.ov.scan2.perm, alpha = 0.01)
+pen.si.ft.scantwo.0.01 <- calc.penalties(out.si.ft.scan2.perm, alpha = 0.01)
+
 
 pen.tk.scantwo.0.01 <- calc.penalties(out.tk.scan2.perm, alpha = 0.01)
 pen.tk.norm.scantwo.0.01 <- calc.penalties(out.tk.norm.scan2.perm, alpha = 0.01)
 pen.tk.ov.scantwo.0.01 <- calc.penalties(out.tk.ov.scan2.perm, alpha = 0.01)
+pen.tk.ft.scantwo.0.01 <- calc.penalties(out.tk.ft.scan2.perm, alpha = 0.01)
 
 pen.si.scantwo.0.05 <- calc.penalties(out.si.scan2.perm, alpha = 0.05)
 pen.si.norm.scantwo.0.05 <- calc.penalties(out.si.norm.scan2.perm, alpha = 0.05)
 pen.si.ov.scantwo.0.05 <- calc.penalties(out.si.ov.scan2.perm, alpha = 0.05)
+pen.si.ft.scantwo.0.05 <- calc.penalties(out.si.ft.scan2.perm, alpha = 0.05)
+
 
 pen.tk.scantwo.0.05 <- calc.penalties(out.tk.scan2.perm, alpha = 0.05)
 pen.tk.norm.scantwo.0.05 <- calc.penalties(out.tk.norm.scan2.perm, alpha = 0.05)
 pen.tk.ov.scantwo.0.05 <- calc.penalties(out.tk.ov.scan2.perm, alpha = 0.05)
+pen.tk.ft.scantwo.0.05 <- calc.penalties(out.tk.ft.scan2.perm, alpha = 0.05)
+
 
 # Fit stepwise multi-QTL models
 
@@ -72,6 +82,12 @@ step.out.ov.si.01 <- stepwiseqtl(dat.si.calc, pheno.col="ril_ovule_num",
                                  model="normal", method="hk", penalties=pen.si.ov.scantwo.0.01, max.qtl=16,
                                  verbose=F, refine.locations=T,additive.only=F, keeplodprofile=T,keeptrace=T)
 
+
+step.out.ft.si.01 <- stepwiseqtl(dat.si.calc, pheno.col="IT_meandaystoflr",
+                                 model="normal", method="hk", penalties=pen.si.ft.scantwo.0.01, max.qtl=16,
+                                 verbose=F, refine.locations=T,additive.only=F, keeplodprofile=T,keeptrace=T)
+
+
 step.out.tk.01 <-stepwiseqtl(dat.tk.calc, pheno.col="mean_ss_num",
                                   model="normal", method="hk", penalties=pen.tk.scantwo.0.01, max.qtl=16,
                                   verbose=F, refine.locations=T,additive.only=F, keeplodprofile=T,keeptrace=T)
@@ -83,6 +99,11 @@ step.out.norm.tk.01 <-stepwiseqtl(dat.tk.calc, pheno.col="norm_mean_ss",
 
 step.out.ov.tk.01 <- stepwiseqtl(dat.tk.calc, pheno.col="mean_ov_num",
                                  model="normal", method="hk", penalties=pen.tk.ov.scantwo.0.01, max.qtl=16,
+                                 verbose=F, refine.locations=T,additive.only=F, keeplodprofile=T,keeptrace=T)
+
+
+step.out.ft.tk.01 <- stepwiseqtl(dat.tk.calc, pheno.col="ft_raw",
+                                 model="normal", method="hk", penalties=pen.tk.ft.scantwo.0.01, max.qtl=16,
                                  verbose=F, refine.locations=T,additive.only=F, keeplodprofile=T,keeptrace=T)
 
 
@@ -326,4 +347,5 @@ set.seed(3)
 
 plotPXG(dat.tk.calc, marker=find.marker(dat.tk.calc, chr="5", pos=c(2.8,9.8)), pheno.col="mean_ss_num", 
         main="Tsu-1 x Kas-1 RILs", ylab="mean short stamen number", ylim=c(0,2.5), infer=FALSE)
+
 
