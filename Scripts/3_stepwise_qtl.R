@@ -200,6 +200,18 @@ plotLodProfile(step.out.ov.si.01, showallchr=TRUE, ylab="LOD", qtl.labels=FALSE)
 abline(h=pen.si.ov.scantwo.0.01[1], col="firebrick3", lty='dashed')
 dev.off()
 
+svg("./Results/stepwise_lod_ft.svg", width=8, height=10)
+par(mfrow=c(2,1))
+plotLodProfile(step.out.ft.tk.01, showallchr=TRUE, ylab="LOD", qtl.labels=FALSE,
+               col=c('black', 'black', 'gray', 'black', 'black'))
+abline(h=pen.tk.ft.scantwo.0.01[1], col="firebrick3", lty='dashed')
+
+plotLodProfile(step.out.ft.si.01, showallchr=TRUE, ylab="LOD", qtl.labels=FALSE,
+               col=c("darkblue", "gray", "black", "darkgreen", "black", "gray", "black", "darkblue"))
+abline(h=pen.si.ft.scantwo.0.01[1], col="firebrick3", lty='dashed')
+
+dev.off()
+
 # What % variance explained by step.out.si.01 and step.out.tk.01?
 fit.si <- fitqtl(dat.si.calc,
             pheno.col="mean_stamen_number",
@@ -229,11 +241,16 @@ si_norm_table <- stepwiseStats(cross=dat.si.calc, model.in=step.out.norm.si.01, 
 
 si_ov_table <- stepwiseStats(cross=dat.si.calc, model.in=step.out.ov.si.01, phe="ril_ovule_num")
 
+si_ft_table <- stepwiseStats(cross=dat.si.calc, model.in=step.out.ov.si.01, phe="IT_meandaystoflr")
+
+
 tk_table <- stepwiseStats(cross=dat.tk.calc, model.in=step.out.tk.01, phe="mean_ss_num")
 
 tk_norm_table <- stepwiseStats(cross=dat.tk.calc, model.in=step.out.norm.tk.01, phe="norm_mean_ss")
 
 tk_ov_table <- stepwiseStats(cross=dat.tk.calc, model.in=step.out.ov.tk.01, phe="mean_ov_num")
+
+tk_ft_table <- stepwiseStats(cross=dat.tk.calc, model.in=step.out.ov.tk.01, phe="ft_raw")
 
 
 # Add percent of parental divergence explained as 100 * 2*effect.estimate/(Sweden - Italy)
@@ -243,9 +260,14 @@ si_ov_table$perc_div <- 100*2*si_ov_table$effect.estimate/(40.20-34.25)
 
 si_norm_table$perc_div <- 100*2*si_norm_table$effect.estimate/(0.6623889 + 1.8308334)
 
+si_ft_table$perc_div <- 100*2*si_ft_table$effect.estimate/()
+
 
 # Add percent of parental divergence explained as 100 * 2*effect.estimate/(Tsu - Kas)
 tk_norm_table$perc_div <- 100*2*tk_norm_table$effect.estimate/(1.720862+1.671206)
+tk_ft_table$perc_div <- 100*2*tk_ft_table$effect.estimate/(47.7 - 25.4)
+tk_ft_table$perc_div <- 100*2*tk_ft_table$effect.estimate/(25.4-47.7)
+
 
 # Export tables to CSV
 si_table[,c(1,3,4,17,18,7,12,8,19)] %>% mutate_if(is.numeric, round, digits = 2) %>%

@@ -197,8 +197,8 @@ write.csv(dat.si, "./Data/belm_roda_pheno_geno/wrangled_belm_roda_phenos.csv" , 
 # Statistical test for difference in parental mean phenotypes. Get means and CIs to
 # overlay on histograms
 ft_parents <- ft[grepl(pattern="/", x=ft$line_num),]
-ft_parents$accession <- case_when(grepl("CS903", ft_parents$line_num) ~ "Tsu-1",
-                                  grepl("CS1640", ft_parents$line_num) ~ "Kas-1") %>% as.factor()
+ft_parents$accession <- case_when(grepl("CS903", ft_parents$line_num) ~ "Kas-1",
+                                  grepl("CS1640", ft_parents$line_num) ~ "Tsu-1") %>% as.factor()
 t.test(data=ft_parents, days_to_flower ~ accession)
 ft_tk_m <- lm(data=ft_parents, days_to_flower ~ accession)
 ft_tk_emm <- emmeans(ft_tk_m, ~ accession) %>% as.data.frame()
@@ -210,8 +210,8 @@ ov_si_emm <- emmeans(ov_si_m, ~ parent) %>% as.data.frame()
 ov_tk_parents <- read_excel("./Data/tsu_kas_pheno_geno/TsuKas_RIL_ovule_counts.xlsx") %>%
   filter(grepl(pattern="/", plant.id))
 
-ov_tk_parents$accession <- case_when(grepl("1640", ov_tk_parents$plant.id) ~ "Kas-1", 
-                                     grepl("903", ov_tk_parents$plant.id) ~ "Tsu-1")
+ov_tk_parents$accession <- case_when(grepl("1640", ov_tk_parents$plant.id) ~ "Tsu-1", 
+                                     grepl("903", ov_tk_parents$plant.id) ~ "Kas-1")
 
 ov_tk_m <- lm(data=ov_tk_parents, MeanOvuleNo ~ accession)
 summary(ov_tk_m)
@@ -227,8 +227,8 @@ tk_ss_parents <- tk_ss_parents %>% mutate(short_n1 = as.numeric(short_n1), short
 tk_ss_parents$mean_short <- rowMeans(x=tk_ss_parents[,c(4,6,8,10)], na.rm=TRUE) # compute mean ss# for each tube
 
 tk_parent_ss_means <- tk_ss_parents %>% group_by(plant_id) %>% summarize(plant_mean_ss = mean(mean_short)) # compute mean ss# each plant
-tk_parent_ss_means$parent <- case_when(grepl("1640", tk_parent_ss_means$plant_id) ~ "Kas-1", 
-                                       grepl("903", tk_parent_ss_means$plant_id) ~ "Tsu-1")
+tk_parent_ss_means$parent <- case_when(grepl("1640", tk_parent_ss_means$plant_id) ~ "Tsu-1", 
+                                       grepl("903", tk_parent_ss_means$plant_id) ~ "Kas-1")
 
 ss_tk_m <- lm(data=tk_parent_ss_means, plant_mean_ss ~ parent)
 summary(ss_tk_m)
@@ -252,10 +252,10 @@ tk_ft_hist <- ggplot(dat.tk$pheno, aes(x = ft_raw)) +
   labs(x = "Days to Flowering", y = "") +
   ylim(c(0,180))+
   theme_minimal()+theme(axis.title = element_text(size = 18), axis.text= element_text(size = 14))+
-  annotate("pointrange", x = ft_tk_emm[2,2], y = 100, xmin = ft_tk_emm[2,5], xmax = ft_tk_emm[2,6]) +
-  annotate("text", x = ft_tk_emm[2,2], y = 110, label = "Tsu-1", size=6)+
-  annotate("pointrange", x = ft_tk_emm[1,2], y = 160, xmin = ft_tk_emm[1,5], xmax = ft_tk_emm[1,6])+
-  annotate("text", x = ft_tk_emm[1,2], y = 170, label = "Kas-1", size=6)
+  annotate("pointrange", x = ft_tk_emm[2,2], y = 150, xmin = ft_tk_emm[2,5], xmax = ft_tk_emm[2,6]) +
+  annotate("text", x = ft_tk_emm[2,2], y = 170, label = "Tsu-1", size=6)+
+  annotate("pointrange", x = ft_tk_emm[1,2], y = 110, xmin = ft_tk_emm[1,5], xmax = ft_tk_emm[1,6])+
+  annotate("text", x = ft_tk_emm[1,2], y = 130, label = "Kas-1", size=6)
 
 tk_ov_hist <- ggplot(dat.tk$pheno, aes(x = mean_ov_num)) +
   geom_histogram(color = "black", fill = "#81D4FA", binwidth=5) +
