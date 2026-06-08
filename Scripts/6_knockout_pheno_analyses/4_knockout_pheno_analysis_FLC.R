@@ -7,16 +7,16 @@
 # about whether FLC induction would have led to stamen loss.
 
 rm(list=ls())
-library(GGally)
 library(dplyr)
 library(ggplot2)
 library(emmeans)
 library(readxl)
+library(lubridate)
 
 # read raw phenotype data into R
 setwd("~/Documents/GitHub/Stamen-loss-2025/")
-dat <- read_excel("./Data/knockout_phenos/FLC_stamen_count_data_August_2025.xlsx", sheet="Stamen Counts")
-trt <- read_excel("./Data/FLC_stamen_count_data_August_2025.xlsx", sheet="Treatments")
+dat <- read_excel("./Data/knockout_phenos/4_knockout_stamen_pheno_FLC.xlsx", sheet="Stamen Counts")
+trt <- read_excel("./Data/knockout_phenos/4_knockout_stamen_pheno_FLC.xlsx", sheet="Treatments")
 head(dat)
 
 
@@ -44,7 +44,7 @@ dat$genotype <- case_when(grepl("A", dat$plant_id) ~ "Col-0",
 
 
 # What was the mean short stamen number for Col-0 in this run?
-mean(dat[which(dat$genotype == "Col-0"), "short_stamens"])
+mean(dat[which(dat$genotype == "Col-0"), "short_stamens"], na.rm=TRUE)
 
 # Indicate block (tray) for KO lines not included in treatment spreadsheet
 dat$block[is.na(dat$block)] <- "pink"

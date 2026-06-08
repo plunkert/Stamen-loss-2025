@@ -241,7 +241,7 @@ si_norm_table <- stepwiseStats(cross=dat.si.calc, model.in=step.out.norm.si.01, 
 
 si_ov_table <- stepwiseStats(cross=dat.si.calc, model.in=step.out.ov.si.01, phe="ril_ovule_num")
 
-si_ft_table <- stepwiseStats(cross=dat.si.calc, model.in=step.out.ov.si.01, phe="IT_meandaystoflr")
+si_ft_table <- stepwiseStats(cross=dat.si.calc, model.in=step.out.ft.si.01, phe="IT_meandaystoflr")
 
 
 tk_table <- stepwiseStats(cross=dat.tk.calc, model.in=step.out.tk.01, phe="mean_ss_num")
@@ -256,16 +256,15 @@ tk_ft_table <- stepwiseStats(cross=dat.tk.calc, model.in=step.out.ov.tk.01, phe=
 # Add percent of parental divergence explained as 100 * 2*effect.estimate/(Sweden - Italy)
 si_table$perc_div <- 100*2*si_table$effect.estimate/(5.96-4.92)
 
-si_ov_table$perc_div <- 100*2*si_ov_table$effect.estimate/(40.20-34.25)
+si_ov_table$perc_div <- 100*2*si_ov_table$effect.estimate/(34.25-40.20)
 
 si_norm_table$perc_div <- 100*2*si_norm_table$effect.estimate/(0.6623889 + 1.8308334)
 
-si_ft_table$perc_div <- 100*2*si_ft_table$effect.estimate/()
+si_ft_table$perc_div <- 100*2*si_ft_table$effect.estimate/(123.59-104.17)
 
 
 # Add percent of parental divergence explained as 100 * 2*effect.estimate/(Tsu - Kas)
 tk_norm_table$perc_div <- 100*2*tk_norm_table$effect.estimate/(1.720862+1.671206)
-tk_ft_table$perc_div <- 100*2*tk_ft_table$effect.estimate/(47.7 - 25.4)
 tk_ft_table$perc_div <- 100*2*tk_ft_table$effect.estimate/(25.4-47.7)
 
 
@@ -282,8 +281,15 @@ tk_norm_table[,c(1,3,4,17,18,7,12,8,19)] %>% mutate_if(is.numeric, round, digits
 si_ov_table[,c(1,3,4,17,18,7,12,8,19)] %>% mutate_if(is.numeric, round, digits = 2) %>%
   write.csv("./Results/si_mean_ovule_QTL_table.csv", row.names=FALSE)
 
+si_ft_table[,c(1,3,4,17,18,7,12,8,19)] %>% mutate_if(is.numeric, round, digits = 2) %>%
+  write.csv("./Results/si_mean_ft_QTL_table.csv", row.names=FALSE)
+
 tk_ov_table[,c(1,3,4,17,18,7,12,8)] %>% mutate_if(is.numeric, round, digits = 2) %>%
   write.csv("./Results/tk_mean_ovule_QTL_table.csv", row.names=FALSE)
+
+
+tk_ft_table[,c(1,3,4,17,18,7,12,8, 19)] %>% mutate_if(is.numeric, round, digits = 2) %>%
+  write.csv("./Results/tk_mean_ft_QTL_table.csv", row.names=FALSE)
 
 
 # Investigate effects of potential chr 5 linked QTL on stamen loss

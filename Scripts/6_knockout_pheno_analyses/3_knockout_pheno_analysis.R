@@ -3,13 +3,14 @@
 # Spring 2025 with Esther.
 
 rm(list=ls())
-library(GGally)
 library(dplyr)
 library(ggplot2)
+library(lubridate)
+library(readxl)
 
 # read raw phenotype data into R
 setwd("~/Documents/GitHub/Stamen-loss-2025/")
-dat <- read_excel("./Data/stamen_cand_knockouts_pheno_2025.xlsx")
+dat <- read_excel("./Data/knockout_phenos/3_knockout_stamen_pheno.xlsx")
 head(dat)
 
 # check that each plant ID has 9 flowers
@@ -67,7 +68,7 @@ m4 <- lm(data=filter(dat_means, dat_means$tray=="T4"), short_stamens ~ genotype)
 summary(m4)
 
 # What was the mean short stamen number for Col-0?
-mean(dat_means[which(dat_means$genotype == "WT"), "short_stamens"])
+mean(dat_means[which(dat_means$genotype == "WT"), "short_stamens"]) # 1.92
 
 
 # Do this again with LSM short stamen number so we consider flower position and such!
