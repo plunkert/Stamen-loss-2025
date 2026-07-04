@@ -5,10 +5,24 @@ Cite as: Plunkert M, Issaka Salia O, Woolcock E, Perez S, Conner J. 2026. bioRxi
 # Scripts
 1_pheno_wrangle_normalize.R takes phenotype data for RILs and parental lines (in ), wrangles it for downstream QTL mapping, and performs correlation analyses.
 
-2_qtl_mapping_scanone_scantwo.R performs one-dimensional and two-dimensional QTL scans. Scantwo permutations computed here are used for significance thresholds in multi-QTL modeling.
+2_percent_parental_contribution.R estimates the percent of the genome of each RIL that came from each parent, and calculates partial correlations between phenotypes that are corrected for parental genome contribution.
 
-3_stepwise_qtl.R performs multi-QTL modeling, producing final QTL models and associated figres and tables presented in the paper.
+3_qtl_mapping_scanone_scantwo.R performs one-dimensional and two-dimensional QTL scans. Scantwo permutations computed here are used for significance thresholds in multi-QTL modeling.
 
-Directory 6_knockout_pheno_analyses contains scripts for analyzing phenotypes of TDNA insertional mutants. Phenotyping was completed in 4 separate rounds with slight differences in how raw data were recorded that require different data wrangling strategies. 
+4_stepwise_qtl.R performs multi-QTL modeling, producing final QTL models and associated figres and tables presented in the paper.
+
+5_investigate_linked_QTL.R examines pairs of putative linked QTLs on chromosome 1 and 5. Linked QTLs can be dubious, and so this analysis is not emphasized in the paper.
+
+Directory 6_knockout_pheno_analyses contains scripts for analyzing phenotypes of TDNA insertional mutants. Phenotyping was completed in 4 separate rounds with slight differences in how raw data were recorded that require different data wrangling strategies, hence the separate scripts here. 
+
+7_genomic_region_figure.R produces a figure showing the genomic region from which candidate genes were selected.
+
+8_map_reads_call_vars.sh takes FASTQ data, maps to the TAIR10 reference genome, and calls variants. Input data are on SRA (BioProject PRJNA1468757).
+
+9_shared_variants.sh performs some VCF filtering and finds homozygous variants that are found in stamen loss but not stamen retaining parents.
+
+10_shared_vars_snpEff.sh uses snpEff to predict effects of the shared variants on gene function.
 
 # Data
+
+To be continued
