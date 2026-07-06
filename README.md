@@ -25,4 +25,27 @@ Directory 6_knockout_pheno_analyses contains scripts for analyzing phenotypes of
 
 # Data
 
-To be continued
+Directory belm_roda_pheno_geno contains phenotype and genotype data for Belm-12 x Roda-47 RILs.
+- Chamber_FloweringTime.xlsx contains flowering time data from Dittmar et al., 2014, Flowering time QTL in natural populations of Arabidopsis thaliana and implications for their adaptive value, in Molecular Ecology.
+- IT SW RIL genotypes.csv contains RIL genotypes.
+- RIL mean ShortStamenNo.csv contains mean short stamen number for RILs.
+- Royer final QTL data for analysis.csv contains data from Royer et al., 2016, Incomplete loss of a conserved trait: function, latitudinal cline, and genetic constraints, Evolution.
+- SW IT OvuleNo.xlsx contains ovule number data for Belm-12 x Roda-47 RILs and parental lines
+- SW_IT_RILparents_forVariance.csv contains stamen number data for Belm-12 and Roda-47 parental lines.
+- wrangled_belm_roda_phenos.csv contains RIL phenotypes following transformation and other data wrangling. Input file for QTL mapping.
+
+Directory tsu_kas_pheno_geno contains phenotype and genotype data for Tsu-1 x Kas-1 RILs.
+- Tsu_Kas_Rqtl_format.csv contains genotype and phenotype data in Rqtl format.
+- TsuKas_RIL_ovule_counts.xlsx contains ovule count data for Tsu-1 x Kas-1 RIL
+- Tsu-Kas RILs.xls contains raw RIL phenotype and parent data.
+- TKrilsGenos_map55_pheno.csv
+- TK_RILs_IDs.csv contains the multiple IDs used for Tsu-1 x Kas-1 RILs on ABRC and in various genetic maps.
+- TsuKas_parent_ovule_counts_MLPentry.xlsx
+
+Directory knockout_phenos contains phenotype data for all 4 rounds of TDNA insertional mutant phenotyping, numbered 1-4.
+
+
+
+
+
+
